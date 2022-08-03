@@ -31,10 +31,10 @@ const Navbar = (props) => {
   const handleSignOut = async (event) => {
     try {
       await magic.user.logout();
-      console.log(await magic.user.isLoggedIn());
     } catch (err) {
       console.log('error while logout', err);
     }
+    router.push('/login');
   };
 
   const handleOnClickMyList = (event) => {
@@ -83,11 +83,9 @@ const Navbar = (props) => {
 
             {showDropdown && (
               <div className={styles.navDropdown}>
-                <Link href="/login">
-                  <a onClick={handleSignOut} className={styles.linkName}>
-                    Sign out
-                  </a>
-                </Link>
+                <a onClick={handleSignOut} className={styles.linkName}>
+                  Sign out
+                </a>
                 <div className={styles.lineWrapper}></div>
               </div>
             )}

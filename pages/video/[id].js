@@ -41,7 +41,7 @@ const VideoPage = (props) => {
           <div className={styles.modalBodyContent}>
             <div className={styles.col1}>
               <p className={styles.publishTime}>
-                <ReactTimeAgo date={publishTime} locale="en-US" />
+                <ReactTimeAgo date={new Date(publishTime)} locale="en-US" />
               </p>
               <p className={styles.title}>{title}</p>
               <p className={styles.description}>{description}</p>
@@ -65,6 +65,15 @@ const VideoPage = (props) => {
 
 export const getStaticProps = async (ctx) => {
   const video = await getVideoById(ctx.params.id);
+
+  // invalid video redirect to root
+  if (video.error) {
+    return {
+      redirect: {
+        destination: '/',
+      },
+    };
+  }
 
   return {
     props: {

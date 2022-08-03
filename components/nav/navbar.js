@@ -28,7 +28,7 @@ const Navbar = (props) => {
     router.push('/');
   };
 
-  const handleSignOut = async () => {
+  const handleSignOut = async (event) => {
     try {
       await magic.user.logout();
       console.log(await magic.user.isLoggedIn());

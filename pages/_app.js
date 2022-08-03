@@ -3,6 +3,10 @@ import '../styles/globals.css';
 import { magic } from 'lib/magic-client';
 import { useRouter } from 'next/router';
 import Loading from 'components/loading/loading';
+import TimeAgo from 'javascript-time-ago';
+import en from 'javascript-time-ago/locale/en.json';
+
+TimeAgo.addDefaultLocale(en);
 
 function MyApp({ Component, pageProps }) {
   const [loading, setLoading] = useState(true);

@@ -10,7 +10,6 @@ export default function Home(props) {
     <div className={styles.container}>
       <Head>
         <title>Neftlix</title>
-        <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className={styles.main}>
         <Navbar />
@@ -52,7 +51,6 @@ export const getServerSideProps = async () => {
   const travelVideos = await getVideosByQuery('Travel');
   const productivityVideos = await getVideosByQuery('Productivity');
   const popularVideos = await getPopularVideos();
-  console.log(disneyVideos);
   return {
     props: { disneyVideos, travelVideos, productivityVideos, popularVideos },
   };

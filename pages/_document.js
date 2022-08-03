@@ -15,10 +15,12 @@ class MyDocument extends Document {
             href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@700&display=swap"
             rel="stylesheet"
           />
+          <link rel="icon" href="/favicon.ico" />
         </Head>
         <body>
           <Main></Main>
           <NextScript />
+          <div id="modals"></div>
         </body>
       </Html>
     );

@@ -18,6 +18,7 @@ export default function Home(props) {
           title="Warcraft - The Movie"
           subTitle="An epic movie in the warcraft universe"
           imgUrl="/static/banner.jpeg"
+          videoId="FagJqquCwJ4"
         />
         <div className={styles.sectionWrapper}>
           <SectionCards

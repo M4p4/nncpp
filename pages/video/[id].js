@@ -3,9 +3,9 @@ import React from 'react';
 
 const VideoPage = () => {
   const router = useRouter();
-  const { id } = router;
+  const { id } = router.query;
 
-  return <div>VideoPage</div>;
+  return <div>Video Page with id: {id}</div>;
 };
 
 export default VideoPage;

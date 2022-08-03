@@ -11,13 +11,14 @@ function MyApp({ Component, pageProps }) {
   useEffect(() => {
     const loginCheck = async () => {
       const isLoggedIn = await magic.user.isLoggedIn();
-      /*if (isLoggedIn) {
+      if (isLoggedIn) {
         router.push('/');
       } else {
         router.push('/login');
-      }*/
+      }
     };
-    loginCheck();
+    //loginCheck();
+    setLoading(false);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {

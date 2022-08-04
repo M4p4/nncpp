@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import styles from './navbar.module.css';
@@ -15,6 +14,8 @@ const Navbar = (props) => {
     const getMetaData = async () => {
       try {
         const { email } = await magic.user.getMetadata();
+        const didToken = await magic.user.getIdToken();
+        console.log(didToken);
         if (email) setUsername(email);
       } catch (err) {
         console.log('error while getting userdata', err);

@@ -1,6 +1,7 @@
 import { mAdmin } from 'lib/magic';
 import jwt from 'jsonwebtoken';
 import { createUser, userExists } from 'lib/db/hasura';
+import { setTokenCookie } from 'lib/cookies';
 
 const handler = async (req, res) => {
   if (req.method === 'POST') {
@@ -32,8 +33,8 @@ const handler = async (req, res) => {
       if (!userIsThere) {
         const user = await createUser(token, metadata);
       }
-
-      res.status(200).json({ success: true, userExists: userIsThere });
+      setTokenCookie(token, res);
+      res.status(200).json({ success: true });
     } catch (err) {
       res.status(500).json({ success: false, message: err?.message });
     }

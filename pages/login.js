@@ -28,22 +28,31 @@ const Login = () => {
   const handleSignIn = async (e) => {
     e.preventDefault();
     if (email.includes('@') && email.length > 5) {
-      if (email === 'homejr@protonmail.com') {
-        try {
-          setLoading(true);
-          const didToken = await magic.auth.loginWithMagicLink({ email });
-          if (didToken) {
+      try {
+        setLoading(true);
+        const didToken = await magic.auth.loginWithMagicLink({ email });
+        if (didToken) {
+          const response = await fetch('/api/login', {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${didToken}`,
+              'Content-Type': 'application/json',
+            },
+          });
+          const loginResponse = await response.json();
+
+          if (loginResponse?.success) {
             router.push('/');
+          } else {
+            setError('Sorry something went wrong while login!');
           }
-        } catch (err) {
-          console.error('Error while login', err);
-          setLoading(false);
         }
-      } else {
-        setError('Email does not exists!');
+      } catch (err) {
+        console.error('Error while login', err);
+        setLoading(false);
       }
     } else {
-      setError('Please enter a valid email!');
+      setError('Email does not exists!');
     }
   };
 

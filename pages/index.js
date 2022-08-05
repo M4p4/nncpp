@@ -4,8 +4,16 @@ import Navbar from 'components/nav/navbar';
 import Head from 'next/head';
 import styles from 'styles/Home.module.css';
 import { getVideosByQuery, getPopularVideos } from 'lib/youtube';
+import { getWatchItAgainVideos } from 'lib/videos-helper';
+import { redirectUser } from 'utils/redirectUser';
 
-export default function Home(props) {
+export default function Home({
+  disneyVideos,
+  travelVideos,
+  productivityVideos,
+  popularVideos,
+  watchItAgainVideos,
+}) {
   return (
     <div className={styles.container}>
       <Head>
@@ -23,22 +31,29 @@ export default function Home(props) {
           <SectionCards
             title="Disney Videos"
             size="large"
-            videos={props.disneyVideos}
+            videos={disneyVideos}
           />
+          {watchItAgainVideos.length > 0 && (
+            <SectionCards
+              title="Watch It Again Videos"
+              size="small"
+              videos={watchItAgainVideos}
+            />
+          )}
           <SectionCards
             title="Travel Videos"
             size="small"
-            videos={props.travelVideos}
+            videos={travelVideos}
           />
           <SectionCards
             title="Productivity Videos"
             size="medium"
-            videos={props.productivityVideos}
+            videos={productivityVideos}
           />
           <SectionCards
             title="Popular Videos"
             size="small"
-            videos={props.popularVideos}
+            videos={popularVideos}
           />
         </div>
       </div>
@@ -46,12 +61,30 @@ export default function Home(props) {
   );
 }
 
-export const getServerSideProps = async () => {
+export const getServerSideProps = async (ctx) => {
+  const { token, userId } = await redirectUser(ctx);
+
+  if (!userId) {
+    return {
+      redirect: {
+        destination: '/login',
+        permament: false,
+      },
+    };
+  }
+
   const disneyVideos = await getVideosByQuery('Disney Trailer');
-  const travelVideos = await getVideosByQuery('Travel');
-  const productivityVideos = await getVideosByQuery('Productivity');
-  const popularVideos = await getPopularVideos();
+  const travelVideos = []; //await getVideosByQuery('Travel');
+  const productivityVideos = []; //await getVideosByQuery('Productivity');
+  const popularVideos = []; //await getPopularVideos();
+  const watchItAgainVideos = await getWatchItAgainVideos(userId, token);
   return {
-    props: { disneyVideos, travelVideos, productivityVideos, popularVideos },
+    props: {
+      disneyVideos,
+      travelVideos,
+      productivityVideos,
+      popularVideos,
+      watchItAgainVideos,
+    },
   };
 };

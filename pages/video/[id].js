@@ -1,5 +1,5 @@
 import Navbar from 'components/nav/navbar';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import styles from 'styles/Video.module.css';
 import Head from 'next/head';
@@ -7,6 +7,8 @@ import cls from 'classnames';
 import { getVideoById } from 'lib/youtube';
 import ReactTimeAgo from 'react-time-ago';
 import { useRouter } from 'next/router';
+import DisLike from 'components/icons/dislike';
+import Like from 'components/icons/like';
 
 Modal.setAppElement('#modals');
 
@@ -14,6 +16,45 @@ const VideoPage = (props) => {
   const router = useRouter();
   const { id, title, publishTime, description, channelTitle, viewCount } =
     props.video;
+
+  const [favourited, setFavourited] = useState(null);
+
+  const updateState = async (fav) => {
+    const res = await fetch('/api/stats', {
+      method: 'POST',
+      body: JSON.stringify({
+        videoId: id,
+        favourited: fav,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    console.log(await res.json());
+  };
+
+  const handleToggleLike = () => {
+    if (favourited == 1) return;
+    setFavourited(1);
+    updateState(1);
+  };
+
+  const handleToggleDisLike = () => {
+    if (favourited == 0) return;
+    setFavourited(0);
+    updateState(0);
+  };
+
+  useEffect(() => {
+    const getVideoStats = async () => {
+      const res = await fetch(`/api/stats?videoId=${id}`);
+      const data = await res.json();
+      if (data.success) {
+        setFavourited(data.stats[0].favourited);
+      }
+    };
+    getVideoStats();
+  }, [id]);
 
   return (
     <>
@@ -37,6 +78,22 @@ const VideoPage = (props) => {
           src={`https://www.youtube.com/embed/${id}?autoplay=0&controls=0&rel=1`}
           frameBorder="0"
         ></iframe>
+
+        <div className={styles.likeDislikeBtnWrapper}>
+          <div className={styles.likeBtnWrapper}>
+            <button onClick={handleToggleLike}>
+              <div className={styles.btnWrapper}>
+                <Like selected={favourited === 1} />
+              </div>
+            </button>
+          </div>
+          <button onClick={handleToggleDisLike}>
+            <div className={styles.btnWrapper}>
+              <DisLike selected={favourited === 0} />
+            </div>
+          </button>
+        </div>
+
         <div className={styles.modalBody}>
           <div className={styles.modalBodyContent}>
             <div className={styles.col1}>

@@ -21,8 +21,7 @@ function MyApp({ Component, pageProps }) {
         router.push('/login');
       }
     };
-    //loginCheck();
-    setLoading(false);
+    loginCheck();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {

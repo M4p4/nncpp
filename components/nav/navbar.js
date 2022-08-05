@@ -7,6 +7,7 @@ import { magic } from 'lib/magic-client';
 
 const Navbar = (props) => {
   const [username, setUsername] = useState('');
+  const [didToken, setDidToken] = useState('');
   const router = useRouter();
   const [showDropdown, setShowDropdown] = useState(false);
 
@@ -15,7 +16,11 @@ const Navbar = (props) => {
       try {
         const { email } = await magic.user.getMetadata();
         const didToken = await magic.user.getIdToken();
-        if (email) setUsername(email);
+
+        if (email) {
+          setUsername(email);
+          setDidToken(didToken);
+        }
       } catch (err) {
         console.log('error while getting userdata', err);
       }
@@ -30,7 +35,14 @@ const Navbar = (props) => {
 
   const handleSignOut = async (event) => {
     try {
-      await magic.user.logout();
+      const res = await fetch('/api/logout', {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${didToken}`,
+          'Content-Type': 'application/json',
+        },
+      });
+      const data = await res.json();
     } catch (err) {
       console.log('error while logout', err);
     }

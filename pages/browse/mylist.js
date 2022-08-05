@@ -15,7 +15,13 @@ const MyListPage = ({ videos }) => {
       <main className={styles.main}>
         <Navbar />
         <div className={styles.sectionWrapper}>
-          <SectionCards title="My List" size="small" videos={videos} />
+          <SectionCards
+            title="My List"
+            size="small"
+            videos={videos}
+            shouldWrap={true}
+            shouldScale={false}
+          />
         </div>
       </main>
     </div>

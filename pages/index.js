@@ -64,15 +64,6 @@ export default function Home({
 export const getServerSideProps = async (ctx) => {
   const { token, userId } = await redirectUser(ctx);
 
-  if (!userId) {
-    return {
-      redirect: {
-        destination: '/login',
-        permament: false,
-      },
-    };
-  }
-
   const disneyVideos = await getVideosByQuery('Disney Trailer');
   const travelVideos = []; //await getVideosByQuery('Travel');
   const productivityVideos = []; //await getVideosByQuery('Productivity');

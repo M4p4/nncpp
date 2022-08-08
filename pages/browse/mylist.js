@@ -31,15 +31,6 @@ const MyListPage = ({ videos }) => {
 export const getServerSideProps = async (ctx) => {
   const { token, userId } = await redirectUser(ctx);
 
-  if (!userId) {
-    return {
-      redirect: {
-        destination: '/login',
-        permament: false,
-      },
-    };
-  }
-
   const videos = await getFavVideos(userId, token);
   return {
     props: {
